@@ -43,12 +43,22 @@ jobs:
           test -s www/index.html
           echo "Restored $(wc -c < www/index.html) bytes of BitAnime HTML"
 
+      - name: Apply mobile v17.0 UI and season poster fixes
+        shell: bash
+        run: |
+          set -euo pipefail
+          base64 --decode .github/scripts/mobile_v17_patch.py.gz.b64 | gzip --decompress > .github/scripts/mobile_v17_patch.py
+          python .github/scripts/mobile_v17_patch.py www/index.html
+          test -s www/index.html
+          grep -q 'mobileSearchGuideBtn' www/index.html
+          grep -q 'season-poster-tab' www/index.html
+
       - name: Create Capacitor Android project
         run: |
           cat > package.json <<'EOF'
           {
             "name": "bitanime-pro",
-            "version": "16.9.0",
+            "version": "17.0.0",
             "private": true,
             "dependencies": {
               "@capacitor/core": "^7.0.0",
@@ -85,13 +95,13 @@ jobs:
           chmod +x gradlew
           ./gradlew assembleDebug --no-daemon
           cd ..
-          cp android/app/build/outputs/apk/debug/app-debug.apk BitAnime-Pro-v16.9.apk
+          cp android/app/build/outputs/apk/debug/app-debug.apk BitAnime-Pro-v17.0.apk
           ls -lh BitAnime-Pro-v16.9.apk
 
       - name: Upload installable APK
         uses: actions/upload-artifact@v4
         with:
-          name: BitAnime-Pro-v16.9-APK
+          name: BitAnime-Pro-v17.0-APK
           path: BitAnime-Pro-v16.9.apk
           if-no-files-found: error
           retention-days: 14
