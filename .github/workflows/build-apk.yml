@@ -28,6 +28,11 @@ jobs:
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
+        with:
+          packages: platform-tools
+
+      - name: Install Android platform and build tools
+        run: yes | sdkmanager --install 'platforms;android-35' 'build-tools;35.0.0' 'platform-tools'
 
       - name: Rebuild original BitAnime web app
         shell: bash
