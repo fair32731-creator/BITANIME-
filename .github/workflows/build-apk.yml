@@ -1,0 +1,92 @@
+name: Build BitAnime Android APK
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Rebuild original BitAnime web app
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p www
+          cat payload/index_part_*.txt | base64 --decode | xz --decompress --stdout > www/index.html
+          test -s www/index.html
+          echo "Restored $(wc -c < www/index.html) bytes of BitAnime HTML"
+
+      - name: Create Capacitor Android project
+        run: |
+          cat > package.json <<'EOF'
+          {
+            "name": "bitanime-pro",
+            "version": "16.9.0",
+            "private": true,
+            "dependencies": {
+              "@capacitor/core": "^7.0.0",
+              "@capacitor/android": "^7.0.0"
+            },
+            "devDependencies": {
+              "@capacitor/cli": "^7.0.0"
+            }
+          }
+          EOF
+          cat > capacitor.config.json <<'EOF'
+          {
+            "appId": "com.bitanime.pro",
+            "appName": "BitAnime.pro",
+            "webDir": "www",
+            "backgroundColor": "#040405",
+            "server": {
+              "androidScheme": "https",
+              "cleartext": true
+            },
+            "android": {
+              "allowMixedContent": true,
+              "backgroundColor": "#040405"
+            }
+          }
+          EOF
+          npm install
+          npx cap add android
+          npx cap sync android
+
+      - name: Build debug APK
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleDebug --no-daemon
+          cd ..
+          cp android/app/build/outputs/apk/debug/app-debug.apk BitAnime-Pro-v16.9.apk
+          ls -lh BitAnime-Pro-v16.9.apk
+
+      - name: Upload installable APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: BitAnime-Pro-v16.9-APK
+          path: BitAnime-Pro-v16.9.apk
+          if-no-files-found: error
+          retention-days: 14
