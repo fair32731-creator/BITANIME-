@@ -96,12 +96,12 @@ jobs:
           ./gradlew assembleDebug --no-daemon
           cd ..
           cp android/app/build/outputs/apk/debug/app-debug.apk BitAnime-Pro-v17.0.apk
-          ls -lh BitAnime-Pro-v16.9.apk
+          ls -lh BitAnime-Pro-v17.0.apk
 
       - name: Upload installable APK
         uses: actions/upload-artifact@v4
         with:
           name: BitAnime-Pro-v17.0-APK
-          path: BitAnime-Pro-v16.9.apk
+          path: BitAnime-Pro-v17.0.apk
           if-no-files-found: error
           retention-days: 14
