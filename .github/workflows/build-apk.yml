@@ -47,7 +47,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          base64 --decode .github/scripts/mobile_v17_patch.py.gz.b64 | gzip --decompress > .github/scripts/mobile_v17_patch.py
+          cat .github/scripts/mobile_v17_patch_part_*.b64 | base64 --decode | gzip --decompress > .github/scripts/mobile_v17_patch.py
           python .github/scripts/mobile_v17_patch.py www/index.html
           test -s www/index.html
           grep -q 'mobileSearchGuideBtn' www/index.html
