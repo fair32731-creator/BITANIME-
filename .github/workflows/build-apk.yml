@@ -1,4 +1,4 @@
-name: Build BitAnime Pro v19.6 APK
+name: Build BitAnime Pro v19.7 APK
 
 on:
   workflow_dispatch:
@@ -12,12 +12,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Restore v19.6 source from uploaded archive
+      - name: Restore v19.7 source from uploaded archive
         shell: bash
         run: |
           set -euo pipefail
-          base64 --decode .github/source-v19.6.zip.b64 > /tmp/bitanime-v19.6.zip
-          unzip -o /tmp/bitanime-v19.6.zip -d .
+          base64 --decode .github/source-v19.7.zip.b64 > /tmp/bitanime-v19.7.zip
+          unzip -o /tmp/bitanime-v19.7.zip -d .
 
       - name: Setup Node.js 20
         uses: actions/setup-node@v4
@@ -64,7 +64,7 @@ jobs:
             npx capacitor-assets generate --android --iconBackgroundColor '#141821' --splashBackgroundColor '#141821' || true
           fi
 
-      - name: Inject v19.6 Redmi 13C Android Pro Bridge (Safe System Bars, Immersive FS, MX/VLC & Back)
+      - name: Inject v19.7 Android System Bars + Smooth WebView Bridge
         run: |
           python3 scripts/patch_android.py
 
@@ -88,16 +88,16 @@ jobs:
               --ks-key-alias "$KEY_ALIAS" \
               --ks-pass "pass:$KEYSTORE_PASSWORD" \
               --key-pass "pass:${KEY_PASSWORD:-$KEYSTORE_PASSWORD}" \
-              --out BitAnime-Pro-v19.6.apk \
+              --out BitAnime-Pro-v19.7.apk \
               app-aligned.apk
           else
             ./gradlew assembleDebug --no-daemon
             cd ..
-            cp android/app/build/outputs/apk/debug/app-debug.apk BitAnime-Pro-v19.6.apk
+            cp android/app/build/outputs/apk/debug/app-debug.apk BitAnime-Pro-v19.7.apk
           fi
 
       - name: Upload Installable APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: BitAnime-Pro-v19.6-APK
-          path: BitAnime-Pro-v19.6.apk
+          name: BitAnime-Pro-v19.7-APK
+          path: BitAnime-Pro-v19.7.apk
