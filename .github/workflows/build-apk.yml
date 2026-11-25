@@ -154,7 +154,7 @@ jobs:
                           }}
                           waitingForWebView = true;
                           webView.evaluateJavascript(
-                              "(function(){try{return typeof window.__bitAnimeHandleBack==='function'?window.__bitAnimeHandleBack():'exit';}catch(e){return 'exit';}})();",
+                              "(function(){{try{{return typeof window.__bitAnimeHandleBack==='function'?window.__bitAnimeHandleBack():'exit';}}catch(e){{return 'exit';}}}})();",
                               value -> {{
                                   waitingForWebView = false;
                                   if (!"\"handled\"".equals(value)) finishActivityBack();
