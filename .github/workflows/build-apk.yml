@@ -1,4 +1,4 @@
-name: Build BitAnime Pro v18.6 APK
+name: Build BitAnime Pro v18.8 APK
 
 on:
   workflow_dispatch:
@@ -12,7 +12,7 @@ jobs:
   build-apk:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
+      - name: Checkout v18.8 source
         uses: actions/checkout@v4
 
       - name: Setup Node.js 20
@@ -35,26 +35,29 @@ jobs:
         run: |
           sdkmanager --install 'platforms;android-35' 'build-tools;35.0.0' 'platform-tools'
 
-      - name: Prepare BitAnime v18.6 web bundle and Capacitor
+      - name: Prepare exact v18.8 web source and Capacitor
         run: |
           set -euo pipefail
-          mkdir -p www
+          mkdir -p www assets
           test -s index.html
+          test -s manifest.json
+          test -s icon.png
           cp index.html www/index.html
           cp manifest.json www/manifest.json
+          cp icon.png www/icon.png
+          cp icon.png assets/icon-only.png
           npm install @capacitor/core@7 @capacitor/cli@7 @capacitor/android@7
           npm install -D @capacitor/assets@3
           rm -rf android
           npx cap add android
           npx cap copy android
 
-      - name: Generate Android icons and splash screen when source assets exist
+      - name: Generate Android launcher icons from supplied v18.8 icon
         run: |
-          if [ -f assets/icon-only.png ]; then
-            npx capacitor-assets generate --android --iconBackgroundColor '#07090d' --splashBackgroundColor '#07090d'
-          fi
+          set -euo pipefail
+          npx capacitor-assets generate --android --iconBackgroundColor '#07090d' --splashBackgroundColor '#07090d'
 
-      - name: Apply native video bridge and Android manifest fixes
+      - name: Apply complete BitAnime Android bridge and manifest fixes
         shell: bash
         run: |
           set -euo pipefail
@@ -65,6 +68,19 @@ jobs:
           mtxt = open(manifest_path, encoding="utf-8").read()
           if "usesCleartextTraffic" not in mtxt:
               mtxt = mtxt.replace("<application", '<application android:usesCleartextTraffic="true" android:hardwareAccelerated="true"', 1)
+          if "androidx.core.content.FileProvider" not in mtxt:
+              provider = textwrap.dedent("""\
+                  <provider
+                      android:name="androidx.core.content.FileProvider"
+                      android:authorities="${applicationId}.fileprovider"
+                      android:exported="false"
+                      android:grantUriPermissions="true">
+                      <meta-data
+                          android:name="android.support.FILE_PROVIDER_PATHS"
+                          android:resource="@xml/file_paths" />
+                  </provider>
+              """)
+              mtxt = mtxt.replace("</application>", provider + "\n</application>")
           mtxt = re.sub(
               r'android:configChanges="[^"]*"',
               'android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"',
@@ -77,8 +93,8 @@ jobs:
           open(fp_path, "w", encoding="utf-8").write(textwrap.dedent("""\
           <?xml version="1.0" encoding="utf-8"?>
           <paths xmlns:android="http://schemas.android.com/apk/res/android">
-              <external-path name="my_images" path="." />
               <cache-path name="shared_videos" path="shared_videos/" />
+              <cache-path name="shared_backups" path="shared_backups/" />
               <cache-path name="cache_root" path="." />
           </paths>
           """))
@@ -94,27 +110,87 @@ jobs:
           java_src = textwrap.dedent(f'''\
           package {pkg_name};
 
+          import android.content.ClipData;
           import android.content.Intent;
           import android.net.Uri;
           import android.os.Bundle;
           import android.util.Base64;
           import android.webkit.JavascriptInterface;
           import android.webkit.WebView;
+          import androidx.activity.OnBackPressedCallback;
           import androidx.core.content.FileProvider;
           import com.getcapacitor.BridgeActivity;
           import java.io.File;
           import java.io.FileOutputStream;
+          import java.nio.charset.StandardCharsets;
           import java.util.Map;
+          import java.util.UUID;
           import java.util.concurrent.ConcurrentHashMap;
 
           public class MainActivity extends BridgeActivity {{
+              private WebView bitAnimeWebView;
+
               @Override
               public void onCreate(Bundle savedInstanceState) {{
                   super.onCreate(savedInstanceState);
                   if (getBridge() != null && getBridge().getWebView() != null) {{
-                      WebView webView = getBridge().getWebView();
-                      webView.addJavascriptInterface(new BitAnimeNativeBridge(), "BitAnimeAndroid");
+                      bitAnimeWebView = getBridge().getWebView();
+                      bitAnimeWebView.addJavascriptInterface(new BitAnimeNativeBridge(), "BitAnimeAndroid");
                   }}
+                  installHardwareBackHandler();
+              }}
+
+              private void installHardwareBackHandler() {{
+                  getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {{
+                      private boolean waitingForWebView = false;
+
+                      @Override
+                      public void handleOnBackPressed() {{
+                          if (waitingForWebView) return;
+                          WebView webView = bitAnimeWebView;
+                          if (webView == null) {{
+                              finishActivityBack();
+                              return;
+                          }}
+                          waitingForWebView = true;
+                          webView.evaluateJavascript(
+                              "(function(){try{return typeof window.__bitAnimeHandleBack==='function'?window.__bitAnimeHandleBack():'exit';}catch(e){return 'exit';}})();",
+                              value -> {{
+                                  waitingForWebView = false;
+                                  if (!"\"handled\"".equals(value)) finishActivityBack();
+                              }}
+                          );
+                      }}
+
+                      private void finishActivityBack() {{
+                          setEnabled(false);
+                          getOnBackPressedDispatcher().onBackPressed();
+                          setEnabled(true);
+                      }}
+                  }});
+              }}
+
+              private static String safeName(String value, String fallback) {{
+                  String name = (value == null || value.trim().isEmpty()) ? fallback : value;
+                  return name.replaceAll("[^a-zA-Z0-9._-]", "_");
+              }}
+
+              private Uri getSharedUri(File file) throws Exception {{
+                  return FileProvider.getUriForFile(
+                      MainActivity.this,
+                      getPackageName() + ".fileprovider",
+                      file
+                  );
+              }}
+
+              private void launchChooser(Intent intent, String title) {{
+                  runOnUiThread(() -> {{
+                      try {{
+                          Intent chooser = Intent.createChooser(intent, title);
+                          chooser.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                          startActivity(chooser);
+                      }} catch (Exception ignored) {{}}
+                  }});
               }}
 
               private class BitAnimeNativeBridge {{
@@ -124,11 +200,9 @@ jobs:
                   public String beginLocalVideo(String fileName) {{
                       try {{
                           File dir = new File(getCacheDir(), "shared_videos");
-                          if (!dir.exists()) dir.mkdirs();
-                          String safe = (fileName == null || fileName.isEmpty()) ? "episode.mp4" : fileName.replaceAll("[^a-zA-Z0-9._-]", "_");
-                          String id = String.valueOf(System.currentTimeMillis());
-                          File out = new File(dir, id + "_" + safe);
-                          if (out.exists()) out.delete();
+                          if (!dir.exists() && !dir.mkdirs()) return "";
+                          String id = UUID.randomUUID().toString();
+                          File out = new File(dir, id + "_" + safeName(fileName, "BitAnime_Episode.mp4"));
                           pendingFiles.put(id, out);
                           return id;
                       }} catch (Exception e) {{ return ""; }}
@@ -138,7 +212,7 @@ jobs:
                   public void appendLocalVideoChunk(String sessionId, String base64Data) {{
                       try {{
                           File out = pendingFiles.get(sessionId);
-                          if (out == null || base64Data == null) return;
+                          if (out == null || base64Data == null || base64Data.isEmpty()) return;
                           byte[] bytes = Base64.decode(base64Data, Base64.DEFAULT);
                           try (FileOutputStream fos = new FileOutputStream(out, true)) {{ fos.write(bytes); }}
                       }} catch (Exception ignored) {{}}
@@ -148,14 +222,13 @@ jobs:
                   public boolean finishAndOpenLocalVideo(String sessionId, String mimeType, String title) {{
                       try {{
                           File out = pendingFiles.remove(sessionId);
-                          if (out == null || !out.exists()) return false;
-                          Uri uri = FileProvider.getUriForFile(MainActivity.this, getPackageName() + ".fileprovider", out);
+                          if (out == null || !out.isFile() || out.length() == 0) return false;
+                          Uri uri = getSharedUri(out);
                           Intent intent = new Intent(Intent.ACTION_VIEW);
                           intent.setDataAndType(uri, (mimeType != null && !mimeType.isEmpty()) ? mimeType : "video/*");
                           intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_ACTIVITY_NEW_TASK);
-                          Intent chooser = Intent.createChooser(intent, "Open with MX Player / VLC");
-                          chooser.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                          runOnUiThread(() -> startActivity(chooser));
+                          intent.setClipData(ClipData.newUri(getContentResolver(), "BitAnime video", uri));
+                          launchChooser(intent, "Open with MX Player / VLC");
                           return true;
                       }} catch (Exception e) {{ return false; }}
                   }}
@@ -163,12 +236,50 @@ jobs:
                   @JavascriptInterface
                   public boolean openVideoUrl(String url, String title) {{
                       try {{
+                          Uri uri = Uri.parse(url);
+                          String scheme = uri.getScheme();
+                          if (scheme == null || !(scheme.equalsIgnoreCase("http") || scheme.equalsIgnoreCase("https"))) return false;
                           Intent intent = new Intent(Intent.ACTION_VIEW);
-                          intent.setDataAndType(Uri.parse(url), "video/*");
+                          intent.setDataAndType(uri, "video/*");
                           intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                          Intent chooser = Intent.createChooser(intent, "Open stream in MX Player / VLC");
-                          chooser.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                          runOnUiThread(() -> startActivity(chooser));
+                          launchChooser(intent, "Open stream in MX Player / VLC");
+                          return true;
+                      }} catch (Exception e) {{ return false; }}
+                  }}
+
+                  @JavascriptInterface
+                  public boolean openExternalUrl(String rawUrl) {{
+                      try {{
+                          Uri uri = Uri.parse(rawUrl);
+                          String scheme = uri.getScheme();
+                          if (scheme == null) return false;
+                          scheme = scheme.toLowerCase();
+                          if (!(scheme.equals("http") || scheme.equals("https") || scheme.equals("mailto") || scheme.equals("tel"))) return false;
+                          Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                          intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                          launchChooser(intent, "Open link with");
+                          return true;
+                      }} catch (Exception e) {{ return false; }}
+                  }}
+
+                  @JavascriptInterface
+                  public boolean shareJsonBackup(String fileName, String jsonText) {{
+                      try {{
+                          if (jsonText == null || jsonText.isEmpty() || jsonText.length() > 8 * 1024 * 1024) return false;
+                          File dir = new File(getCacheDir(), "shared_backups");
+                          if (!dir.exists() && !dir.mkdirs()) return false;
+                          File out = new File(dir, safeName(fileName, "BitAnime_Backup.json"));
+                          try (FileOutputStream fos = new FileOutputStream(out, false)) {{
+                              fos.write(jsonText.getBytes(StandardCharsets.UTF_8));
+                              fos.flush();
+                          }}
+                          Uri uri = getSharedUri(out);
+                          Intent intent = new Intent(Intent.ACTION_SEND);
+                          intent.setType("application/json");
+                          intent.putExtra(Intent.EXTRA_STREAM, uri);
+                          intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_ACTIVITY_NEW_TASK);
+                          intent.setClipData(ClipData.newUri(getContentResolver(), "BitAnime backup", uri));
+                          launchChooser(intent, "Save or share BitAnime backup");
                           return true;
                       }} catch (Exception e) {{ return false; }}
                   }}
@@ -176,7 +287,7 @@ jobs:
           }}
           ''')
           open(main_act, "w", encoding="utf-8").write(java_src)
-          print("Installed native BitAnime video bridge in", main_act)
+          print("Installed video, backup-share, external-link and hardware-back bridges in", main_act)
           PYEOF
 
       - name: Use Asia-Pacific Maven Central mirror
@@ -193,7 +304,7 @@ jobs:
                   path.write_text(text, encoding="utf-8")
           PY
 
-      - name: Build installable v18.6 debug APK
+      - name: Build installable v18.8 debug APK
         run: |
           set -euo pipefail
           cd android
@@ -205,20 +316,18 @@ jobs:
               BUILD_OK=1
               break
             fi
-            if [ "$attempt" -lt 3 ]; then
-              sleep $((attempt * 20))
-            fi
+            if [ "$attempt" -lt 3 ]; then sleep $((attempt * 20)); fi
           done
           test "$BUILD_OK" = "1"
           cd ..
-          cp android/app/build/outputs/apk/debug/app-debug.apk BitAnime-Pro-v18.6.apk
-          test -s BitAnime-Pro-v18.6.apk
-          ls -lh BitAnime-Pro-v18.6.apk
+          cp android/app/build/outputs/apk/debug/app-debug.apk BitAnime-Pro-v18.8.apk
+          test -s BitAnime-Pro-v18.8.apk
+          ls -lh BitAnime-Pro-v18.8.apk
 
       - name: Upload installable APK
         uses: actions/upload-artifact@v4
         with:
-          name: BitAnime-Pro-v18.6-APK
-          path: BitAnime-Pro-v18.6.apk
+          name: BitAnime-Pro-v18.8-APK
+          path: BitAnime-Pro-v18.8.apk
           if-no-files-found: error
           retention-days: 14

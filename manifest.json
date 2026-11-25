@@ -6,10 +6,12 @@
   "background_color": "#07090d",
   "theme_color": "#07090d",
   "orientation": "portrait-primary",
-  "icons": [{
-    "src": "./icon.png",
-    "sizes": "512x512",
-    "type": "image/png",
-    "purpose": "any maskable"
-  }]
+  "icons": [
+    {
+      "src": "./icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
 }

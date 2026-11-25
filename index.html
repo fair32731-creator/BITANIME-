@@ -11,7 +11,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <link rel="manifest" href="./manifest.json" />
   <link id="dynamicFavicon" rel="icon" type="image/svg+xml" href="" />
-  <title>BitAnime.pro v18.6 — Season Posters & Live Progress Orbs</title>
+  <title>BitAnime.pro v18.8 — Season Posters & Live Progress Orbs</title>
   <link rel="preconnect" href="https://graphql.anilist.co">
   <link rel="preconnect" href="https://api.jikan.moe">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -5108,7 +5108,7 @@ img, video { max-width: 100%; height: auto; }
     body.paper-mode .nav-tab.is-active-tab { color: #09090b !important; text-shadow: none !important; }
   
     /* =====================================================================
-       v18.6 PER-SEASON OFFICIAL POSTER WATCH-ORDER CARDS & PROGRESS ORBS
+       v18.8 PER-SEASON OFFICIAL POSTER WATCH-ORDER CARDS & PROGRESS ORBS
        ===================================================================== */
 
     /* Horizontal Official Season Poster Watch-Order Card */
@@ -5261,7 +5261,7 @@ img, video { max-width: 100%; height: auto; }
 
   
     /* =====================================================================
-       v18.6 UPLOADED vs NOT-UPLOADED EPISODE ORB INDICATOR (CLEAN, NO DOT)
+       v18.8 UPLOADED vs NOT-UPLOADED EPISODE ORB INDICATOR (CLEAN, NO DOT)
        ===================================================================== */
     .ep-orb.is-vault {
       background: linear-gradient(155deg, rgba(56, 189, 248, 0.22) 0%, rgba(16, 185, 129, 0.16) 58%, rgba(10, 22, 32, 0.92) 100%) !important;
@@ -5297,7 +5297,7 @@ img, video { max-width: 100%; height: auto; }
     }
 
   
-    /* === v18.6 ZERO-JANK GPU COMPOSITING FOR SMOKED-GLASS SCROLL BACKDROP === */
+    /* === v18.8 ZERO-JANK GPU COMPOSITING FOR SMOKED-GLASS SCROLL BACKDROP === */
     .v173-parallax-stage,
     .v173-scroll-aura,
     .v173-smoked-veil {
@@ -5308,7 +5308,7 @@ img, video { max-width: 100%; height: auto; }
 
   
     /* =====================================================================
-       v18.6 LIVE WEEKLY SCHEDULE, HINDI DUB BADGES & NEWS HUB STYLES
+       v18.8 LIVE WEEKLY SCHEDULE, HINDI DUB BADGES & NEWS HUB STYLES
        ===================================================================== */
     .hindi-dub-pill {
       display: inline-flex;
@@ -5365,7 +5365,7 @@ img, video { max-width: 100%; height: auto; }
 
   
     /* =====================================================================
-       v18.6 CRITICAL FIXES: MISSING UTILITIES + MODAL Z-INDEX + CARD SIZING
+       v18.8 CRITICAL FIXES: MISSING UTILITIES + MODAL Z-INDEX + CARD SIZING
        ===================================================================== */
     .w-12 { width: 3rem !important; }
     .w-14 { width: 3.5rem !important; }
@@ -5440,7 +5440,7 @@ img, video { max-width: 100%; height: auto; }
 
   
     /* =====================================================================
-       v18.6 VERIFIED HINDI DUB WEEKLY ENGINE & 1-TAP OVERRIDE CONTROLS
+       v18.8 VERIFIED HINDI DUB WEEKLY ENGINE & 1-TAP OVERRIDE CONTROLS
        ===================================================================== */
     .hindi-verified-pill {
       display: inline-flex;
@@ -5505,7 +5505,7 @@ img, video { max-width: 100%; height: auto; }
     }
 
   
-    /* === v18.6 MANUAL WEEKLY PICKER & QUICK UNPIN STYLES === */
+    /* === v18.8 MANUAL WEEKLY PICKER & QUICK UNPIN STYLES === */
     #weeklyPickerModal { z-index: 69 !important; }
     .w-32 { width: 8rem !important; }
     .weekly-unpin-btn {
@@ -5551,6 +5551,281 @@ img, video { max-width: 100%; height: auto; }
       flex-shrink: 0 !important;
     }
 
+  
+    /* =====================================================================
+       v18.8 LIQUID GLACIER SILVER-WHITE GLASS + MOBILE PRO + 120Hz SMOOTH
+       ===================================================================== */
+
+    /* 1. KILL HEAVY SVG feTurbulence NOISE OVERLAY (Instant Mobile FPS Boost!) */
+    body::before {
+      display: none !important;
+      content: none !important;
+    }
+
+    /* 2. LIQUID GLACIER SILVER-WHITE & SMOKED CHARCOAL BACKDROP (Matches Bottom Dock!) */
+    html, body {
+      background: #171b22 !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .ambient-cinema-backdrop.v173-smoked-bg {
+      background:
+        radial-gradient(ellipse 115% 58% at 50% -6%, rgba(255, 255, 255, 0.34) 0%, rgba(226, 234, 246, 0.18) 38%, transparent 72%),
+        radial-gradient(ellipse 85% 50% at 12% 38%, rgba(242, 246, 252, 0.16) 0%, transparent 64%),
+        radial-gradient(ellipse 85% 55% at 88% 72%, rgba(228, 236, 248, 0.15) 0%, transparent 66%),
+        radial-gradient(ellipse 95% 42% at 50% 104%, rgba(255, 255, 255, 0.22) 0%, transparent 68%),
+        linear-gradient(170deg, #272d38 0%, #1c2028 42%, #151820 74%, #202530 100%) !important;
+    }
+
+    /* Hide heavy blurred <img> & giant blur() auras for pure Liquid Glacier clarity & 120Hz speed */
+    .ambient-cinema-img.v173-ambient-art,
+    .v173-parallax-stage,
+    .v173-scroll-aura {
+      display: none !important;
+    }
+
+    .v173-smoked-veil {
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.06) 0%, transparent 28%, rgba(12, 15, 20, 0.28) 100%) !important;
+      opacity: 1 !important;
+    }
+
+    .v173-grain-mesh {
+      background-image: radial-gradient(rgba(255, 255, 255, 0.075) 1px, transparent 1px) !important;
+      background-size: 26px 26px !important;
+      opacity: 0.35 !important;
+    }
+
+    /* 3. HARMONIZED LIQUID GLACIER SILVER-WHITE FROSTED SURFACES */
+    #appHeader.liquid-glass-header {
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.18) 0%, rgba(36, 42, 52, 0.72) 55%, rgba(22, 26, 34, 0.80) 100%) !important;
+      backdrop-filter: blur(20px) saturate(155%) !important;
+      -webkit-backdrop-filter: blur(20px) saturate(155%) !important;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.22) !important;
+      box-shadow: 0 10px 28px -12px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.35) !important;
+    }
+
+    .liquid-glass-panel {
+      background: linear-gradient(155deg, rgba(255, 255, 255, 0.16) 0%, rgba(44, 50, 62, 0.54) 44%, rgba(22, 26, 34, 0.72) 100%) !important;
+      border: 1px solid rgba(255, 255, 255, 0.22) !important;
+      border-radius: 22px !important;
+      box-shadow: 0 16px 36px -14px rgba(0, 0, 0, 0.52), inset 0 1px 0 rgba(255, 255, 255, 0.38) !important;
+    }
+
+    .v17-studio-footer {
+      background: linear-gradient(160deg, rgba(255, 255, 255, 0.13) 0%, rgba(26, 30, 38, 0.78) 100%) !important;
+      border-color: rgba(255, 255, 255, 0.18) !important;
+    }
+
+    .status-segmented-capsule {
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.14) 0%, rgba(24, 28, 36, 0.68) 100%) !important;
+      border-color: rgba(255, 255, 255, 0.22) !important;
+    }
+
+    /* Bottom Dock: Signature Bright Silver-White Liquid Glacier */
+    .liquid-glass-dock,
+    .liquid-dock-search-circle {
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.24) 0%, rgba(44, 50, 62, 0.68) 45%, rgba(20, 24, 32, 0.80) 100%) !important;
+      backdrop-filter: blur(22px) saturate(175%) !important;
+      -webkit-backdrop-filter: blur(22px) saturate(175%) !important;
+      border: 1px solid rgba(255, 255, 255, 0.34) !important;
+      box-shadow:
+        0 18px 40px -8px rgba(0, 0, 0, 0.68),
+        inset 0 1.5px 1px rgba(255, 255, 255, 0.60),
+        inset 0 -1px 2px rgba(255, 255, 255, 0.16) !important;
+    }
+
+    /* 4. FIX SEARCH BAR OVERLAP & CLEAN LIQUID GLACIER SEARCH OVERLAY (Fixes image_2f9540.jpg!) */
+    .pr-20 { padding-right: 5rem !important; }
+
+    #mobileSearchOverlay {
+      background:
+        radial-gradient(ellipse 110% 50% at 50% 0%, rgba(255, 255, 255, 0.22) 0%, transparent 65%),
+        linear-gradient(180deg, rgba(30, 35, 44, 0.94) 0%, rgba(20, 24, 31, 0.97) 55%, rgba(16, 19, 25, 0.99) 100%) !important;
+      backdrop-filter: blur(18px) !important;
+      -webkit-backdrop-filter: blur(18px) !important;
+    }
+
+    #mobileSearchInput {
+      padding-left: 42px !important;
+      padding-right: 78px !important;
+      padding-top: 11px !important;
+      padding-bottom: 11px !important;
+      font-size: 13.5px !important;
+      background: rgba(255, 255, 255, 0.12) !important;
+      border: 1px solid rgba(255, 255, 255, 0.28) !important;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.24);
+    }
+    #mobileSearchInput::placeholder {
+      color: rgba(226, 232, 240, 0.65) !important;
+      font-size: 13px !important;
+    }
+
+    #openWatchOrderBannerBtn {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(36, 42, 54, 0.68) 100%) !important;
+      border-color: rgba(255, 255, 255, 0.24) !important;
+      padding: 11px 14px !important;
+    }
+    #watchOrderBannerTitle {
+      text-align: left !important;
+      font-size: 12.5px !important;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* 5. MOBILE PRO TOP HEADER, HERO BILLBOARD & 120Hz ZERO-JANK OPTIMIZATIONS */
+    @media (max-width: 639px) {
+      /* Remove expensive backdrop-filter on scrolling panels so mobile scrolls like BUTTER (120fps!) */
+      .liquid-glass-panel,
+      .v17-studio-footer,
+      .status-segmented-capsule,
+      #customPlaylistsStrip button.liquid-pill-surface,
+      #librarySortSelect,
+      #surpriseMeBtn,
+      .editorial-index-tag,
+      .editorial-score-tag,
+      .editorial-quick-btn,
+      .v17-meta-chip,
+      .v17-circle-arrow,
+      .v17-cta-glass {
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+      }
+
+      /* Fix Top Header Right-Edge Clipping on 360px–420px Phones! (Fixes image_2f9523.jpg!) */
+      #appHeader.liquid-glass-header {
+        padding-top: max(32px, calc(env(safe-area-inset-top) + 8px)) !important;
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+        padding-bottom: 8px !important;
+      }
+      #appHeader .brand-crest {
+        width: 28px !important;
+        height: 28px !important;
+        border-radius: 8px !important;
+      }
+      #appHeader h1 {
+        font-size: 14.5px !important;
+      }
+      #appHeader .flex.items-center.gap-2\.5 {
+        gap: 6px !important;
+      }
+      #appHeader .flex.items-center.gap-1\.5 {
+        gap: 4px !important;
+      }
+      #toggleBackdropModeBtn {
+        display: none !important;
+      }
+      #syncPostersBtn,
+      #openAddAnimeBtn,
+      #topSettingsBtn {
+        width: 28px !important;
+        height: 28px !important;
+        padding: 0 !important;
+        justify-content: center !important;
+      }
+      #openNewsHubBtn {
+        height: 28px !important;
+        padding: 0 8px !important;
+        font-size: 10px !important;
+        gap: 4px !important;
+      }
+      #topVaultCornerBtn {
+        height: 28px !important;
+        padding: 0 7px !important;
+        gap: 3px !important;
+      }
+      #topVaultCornerBadge {
+        font-size: 9.5px !important;
+      }
+
+      /* Upgraded Mobile Hero Spotlight Billboard (Crisp Vertical Poster Art + Luminous Top!) */
+      .v17-hero-stage {
+        min-height: 465px !important;
+        border-radius: 24px !important;
+        border: 1px solid rgba(255, 255, 255, 0.28) !important;
+        box-shadow: 0 22px 46px -14px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.42) !important;
+      }
+      .v17-hero-bg-mobile {
+        object-fit: cover !important;
+        object-position: center 12% !important;
+        filter: brightness(0.92) contrast(1.04) saturate(1.08) !important;
+        animation: none !important;
+      }
+      .v17-hero-scrim {
+        background:
+          linear-gradient(180deg,
+            rgba(12, 16, 24, 0.56) 0%,
+            rgba(12, 16, 24, 0.08) 24%,
+            rgba(14, 18, 26, 0.26) 44%,
+            rgba(16, 20, 28, 0.86) 66%,
+            rgba(16, 20, 28, 0.97) 100%) !important;
+      }
+      .v17-hero-orb-accent {
+        display: none !important;
+      }
+      .v17-hero-top {
+        padding: 12px 14px 4px !important;
+      }
+      .v17-hero-content {
+        padding: 128px 14px 14px !important;
+        gap: 12px !important;
+      }
+      .v17-hero-left {
+        gap: 7px !important;
+      }
+      .v17-hero-title {
+        font-size: 26px !important;
+        line-height: 1.05 !important;
+        letter-spacing: -0.025em !important;
+      }
+      .v17-hero-desc {
+        font-size: 11.5px !important;
+        line-height: 1.48 !important;
+        -webkit-line-clamp: 2 !important;
+      }
+      .v17-cta-primary {
+        height: 36px !important;
+        padding: 0 15px !important;
+        font-size: 11.5px !important;
+      }
+      .v17-cta-glass {
+        height: 36px !important;
+        padding: 0 12px !important;
+        font-size: 11.5px !important;
+        background: rgba(255, 255, 255, 0.16) !important;
+        border-color: rgba(255, 255, 255, 0.28) !important;
+      }
+      .v17-feat-poster {
+        width: 78px !important;
+        border-radius: 12px !important;
+      }
+
+      /* Poster Cards & Trending Strip GPU Containment for Silky 120Hz Scroll */
+      .poster-card,
+      .showcase-card {
+        contain: layout style paint;
+      }
+    }
+
+  
+    /* === v18.8 ANDROID APK WEBVIEW STABILITY & FILE PICKER FIX === */
+    .file-input-a11y {
+      position: absolute !important;
+      width: 1px !important;
+      height: 1px !important;
+      padding: 0 !important;
+      margin: -1px !important;
+      overflow: hidden !important;
+      clip: rect(0, 0, 0, 0) !important;
+      white-space: nowrap !important;
+      border: 0 !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
+
   </style>
 </head>
 <body class="min-h-screen pb-28 selection:bg-teal-400/30 selection:text-white">
@@ -5579,7 +5854,7 @@ img, video { max-width: 100%; height: auto; }
       <div class="flex items-center justify-between gap-2">
         <!-- Original BitAnime Sunset-Tangerine to Crimson Liquid-Glass Twin "B"-Blade Logo -->
         <div class="flex items-center gap-2.5 shrink-0">
-          <div class="brand-crest" title="BitAnime.pro v18.6">
+          <div class="brand-crest" title="BitAnime.pro v18.8">
             <svg class="w-full h-full" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
               <defs>
                 <linearGradient id="baMonoBg" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
@@ -5649,7 +5924,7 @@ img, video { max-width: 100%; height: auto; }
             <div class="flex items-center justify-between border-b border-white/15 pb-2.5">
               <div>
                 <h3 class="text-xs font-extrabold text-white">Studio Settings &amp; Backup</h3>
-                <p class="text-[10px] text-slate-400">BitAnime.pro v18.6 • Season Posters Pro</p>
+                <p class="text-[10px] text-slate-400">BitAnime.pro v18.8 • Season Posters Pro</p>
               </div>
               <button id="closeTopSettingsPopoverBtn" type="button" class="w-6 h-6 rounded-full bg-white/10 hover:bg-white/20 text-xs text-white flex items-center justify-center">✕</button>
             </div>
@@ -5678,7 +5953,7 @@ img, video { max-width: 100%; height: auto; }
                 <button id="exportLibraryBackupBtn" type="button" class="py-2 px-3 rounded-xl liquid-pill-active text-[11px] font-extrabold">⬇ Export JSON</button>
                 <label class="py-2 px-3 rounded-xl liquid-pill-surface text-[11px] font-bold text-center cursor-pointer">
                   ⬆ Import JSON
-                  <input id="importLibraryBackupInput" type="file" accept=".json,application/json" class="hidden" />
+                  <input id="importLibraryBackupInput" type="file" accept=".json,application/json" class="file-input-a11y" />
                 </label>
               </div>
               <p class="text-[10px] text-slate-400 leading-relaxed">Save your Watching list, episode progress, ratings &amp; notes before updating APK.</p>
@@ -5769,7 +6044,7 @@ img, video { max-width: 100%; height: auto; }
       </div>
     </section>
 
-    <!-- 3. 100% MANUAL PERSONAL WEEKLY SCHEDULE (v18.6) -->
+    <!-- 3. 100% MANUAL PERSONAL WEEKLY SCHEDULE (v18.8) -->
     <section id="weeklySection" class="hidden">
       <div class="liquid-glass-panel rounded-3xl p-4 sm:p-5 space-y-4">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
@@ -5868,7 +6143,7 @@ img, video { max-width: 100%; height: auto; }
         <div class="space-y-1.5">
           <p class="font-mono-tech text-[10px] uppercase tracking-wider text-white/70 font-bold">App Engine</p>
           <div class="flex flex-col gap-1 text-[11.5px] text-slate-400">
-            <span>• Version 18.6 Season Posters Pro</span>
+            <span>• Version 18.8 Season Posters Pro</span>
             <span>• IndexedDB 20-EP Vault</span>
             <span>• MX Player / VLC Ready</span>
           </div>
@@ -5959,7 +6234,7 @@ img, video { max-width: 100%; height: auto; }
             enterkeyhint="search"
             autocomplete="off"
             spellcheck="false"
-            placeholder="Search any anime, typo, or watch order..."
+            placeholder="Search anime..."
             class="w-full pl-11 pr-20 py-3 rounded-full bg-white/[0.09] border border-[#5eead4]/40 text-sm text-white placeholder-slate-400 focus:outline-none focus:border-[#5eead4]/80"
           />
           <!-- Compact Camera + Clear inside search pill so top bar stays super clean -->
@@ -5969,7 +6244,7 @@ img, video { max-width: 100%; height: auto; }
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
                 <circle cx="12" cy="13" r="3"/>
               </svg>
-              <input id="traceMoeFileInput" type="file" accept="image/*" class="hidden" />
+              <input id="traceMoeFileInput" type="file" accept="image/*" class="file-input-a11y" />
             </label>
             <button id="mobileSearchClearInputBtn" type="button" class="hidden w-7 h-7 rounded-full bg-white/15 hover:bg-white/25 text-white flex items-center justify-center text-xs">✕</button>
           </div>
@@ -5983,7 +6258,7 @@ img, video { max-width: 100%; height: auto; }
       <!-- Dedicated Prominent Watch Order & Languages Banner (Exact 2nd Image Style) -->
       <button id="openWatchOrderBannerBtn" type="button" class="mt-3 w-full px-4 py-3 rounded-2xl bg-gradient-to-r from-[#172530]/90 via-[#152028]/85 to-[#1b2421]/85 hover:from-[#1c2f3d] hover:to-[#222f2a] border border-white/15 flex items-center justify-between gap-3 text-left transition active:scale-[0.985]">
         <span class="w-2.5 h-2.5 rounded-full bg-[#5eead4] shrink-0"></span>
-        <span id="watchOrderBannerTitle" class="flex-1 text-center text-xs sm:text-sm font-extrabold text-white leading-snug">Watch Order &amp; Languages Guide (Any Anime)</span>
+        <span id="watchOrderBannerTitle" class="flex-1 text-center text-xs sm:text-sm font-extrabold text-white leading-snug">Watch Order &amp; Season Guide</span>
         <span id="watchOrderBannerAction" class="font-mono-tech text-[11px] font-extrabold text-[#5eead4] shrink-0">Open →</span>
       </button>
 
@@ -6182,7 +6457,7 @@ img, video { max-width: 100%; height: auto; }
           <button id="openWithAppBtn" type="button" class="px-3.5 py-1.5 rounded-full bg-[#5eead4]/15 border border-[#5eead4]/45 text-xs font-extrabold text-[#5eead4] shrink-0">↗ Open with App</button>
           <label title="Load Local .SRT or .VTT Subtitles" class="liquid-pill-surface px-3 py-1.5 rounded-full text-xs font-bold shrink-0 cursor-pointer flex items-center gap-1">
             <span>CC</span><span id="subStatusTag" class="text-[10px] accent-text">Sub</span>
-            <input id="subtitleFileInput" type="file" accept=".srt,.vtt,text/vtt" class="hidden" />
+            <input id="subtitleFileInput" type="file" accept=".srt,.vtt,text/vtt" class="file-input-a11y" />
           </label>
           <button id="pipModeBtn" type="button" class="hidden sm:inline-flex liquid-pill-surface px-3 py-1.5 rounded-full text-xs font-semibold shrink-0">PiP</button>
           <button id="theaterModeBtn" type="button" class="hidden sm:inline-flex liquid-pill-surface px-3 py-1.5 rounded-full text-xs font-semibold shrink-0">Theater</button>
@@ -6204,7 +6479,7 @@ img, video { max-width: 100%; height: auto; }
           <img id="detailPosterImg" src="" alt="" class="w-full h-full object-cover object-top bg-black/40" referrerpolicy="no-referrer" />
           <span id="detailSeasonPosterBadge" class="absolute top-1 left-1 px-1.5 py-0.5 rounded-md bg-black/75 border border-white/20 font-mono-tech text-[8.5px] font-extrabold text-[#5eead4]">S1</span>
           <span class="absolute bottom-1 right-1 w-6 h-6 rounded-full bg-black/75 border border-white/25 text-[10px] text-white flex items-center justify-center opacity-85 group-hover:opacity-100 transition">📷</span>
-          <input id="detailCustomPosterInput" type="file" accept="image/*" class="hidden" />
+          <input id="detailCustomPosterInput" type="file" accept="image/*" class="file-input-a11y" />
         </label>
         <div class="flex-1 min-w-0 space-y-2.5">
           <div>
@@ -6270,7 +6545,7 @@ img, video { max-width: 100%; height: auto; }
               <button id="syncSeasonsOrderBtn" type="button" title="Sync All Seasons & Official Posters" class="px-2.5 py-1 rounded-full liquid-pill-surface text-[10.5px] font-bold">↻ Sync</button>
               <label title="Bulk upload multiple episode videos at once" class="px-2.5 py-1 rounded-full accent-soft border text-[10.5px] font-bold cursor-pointer">
                 ⬆ Bulk
-                <input id="bulkUploadEpisodesInput" type="file" accept="video/*" multiple class="hidden" />
+                <input id="bulkUploadEpisodesInput" type="file" accept="video/*" multiple class="file-input-a11y" />
               </label>
               <button id="addQuickSeasonBtn" type="button" class="px-2.5 py-1 rounded-full liquid-pill-surface text-[10.5px] font-bold">+ Season</button>
             </div>
@@ -6307,7 +6582,7 @@ img, video { max-width: 100%; height: auto; }
             <button id="activeEpWatchedToggleBtn" type="button" class="hidden"></button>
             <label title="Upload / Replace Offline Video for focused Episode" class="px-2.5 py-1 rounded-full accent-soft border text-[10.5px] font-bold cursor-pointer flex items-center gap-1">
               <span>⬆</span><span class="hidden sm:inline">Upload</span>
-              <input id="activeEpUploadInput" type="file" accept="video/*" class="hidden" />
+              <input id="activeEpUploadInput" type="file" accept="video/*" class="file-input-a11y" />
             </label>
             <button id="activeEpVaultDelBtn" type="button" title="Remove from Offline Vault" class="hidden w-7 h-7 rounded-full bg-rose-500/20 hover:bg-rose-500/35 text-rose-300 text-xs flex items-center justify-center">✕</button>
           </div>
@@ -6400,7 +6675,7 @@ img, video { max-width: 100%; height: auto; }
   </div>
 
   <!-- =====================================================================
-       LIVE ANIME NEWS, UPCOMING RELEASES & HINDI DUB HUB MODAL (v18.6)
+       LIVE ANIME NEWS, UPCOMING RELEASES & HINDI DUB HUB MODAL (v18.8)
        ===================================================================== -->
   <div id="newsHubModal" class="fixed inset-0 z-[68] hidden flex-col justify-end sm:justify-center sm:items-center sm:p-4 liquid-modal-backdrop">
     <div class="liquid-sheet w-full max-w-4xl rounded-t-3xl sm:rounded-3xl overflow-hidden flex flex-col max-h-[92dvh]">
@@ -6434,7 +6709,7 @@ img, video { max-width: 100%; height: auto; }
   </div>
 
   <!-- =====================================================================
-       MANUAL WEEKLY ANIME PICKER MODAL (v18.6)
+       MANUAL WEEKLY ANIME PICKER MODAL (v18.8)
        ===================================================================== -->
   <div id="weeklyPickerModal" class="fixed inset-0 z-[69] hidden flex-col justify-end sm:justify-center sm:items-center sm:p-4 liquid-modal-backdrop">
     <div class="liquid-sheet w-full max-w-2xl rounded-t-3xl sm:rounded-3xl overflow-hidden flex flex-col" style="max-height:88dvh;">
@@ -7164,7 +7439,7 @@ img, video { max-width: 100%; height: auto; }
     }
 
 
-    // === v18.6 SMART FRANCHISE DEDUPLICATION & AUTO-MERGE ENGINE ===
+    // === v18.8 SMART FRANCHISE DEDUPLICATION & AUTO-MERGE ENGINE ===
     const FRANCHISE_ALIAS_MAP = [
       { key: "demon slayer", patterns: ["demon slayer", "kimetsu no yaiba"] },
       { key: "attack on titan", patterns: ["attack on titan", "shingeki no kyojin"] },
@@ -8221,7 +8496,8 @@ img, video { max-width: 100%; height: auto; }
       sec.innerHTML = `
         <div class="v17-hero-stage">
           <!-- Full-Bleed Atmospheric Artwork -->
-          <img src="${bgArtwork}" alt="${slide.title}" class="v17-hero-bg ${slide.hasBanner ? "is-banner" : ""}" referrerpolicy="no-referrer" />
+          <img src="${slide.poster || bgArtwork}" alt="${slide.title}" class="v17-hero-bg v17-hero-bg-mobile sm:hidden" referrerpolicy="no-referrer" />
+          <img src="${bgArtwork}" alt="${slide.title}" class="v17-hero-bg hidden sm:block ${slide.hasBanner ? "is-banner" : ""}" referrerpolicy="no-referrer" />
           <div class="v17-hero-scrim"></div>
           <div class="v17-hero-orb-accent" aria-hidden="true"></div>
 
@@ -8533,7 +8809,7 @@ img, video { max-width: 100%; height: auto; }
     }
 
 
-    // === v18.6 PER-SEASON OFFICIAL POSTERS + WATCH ORDER SYNC ENGINE ===
+    // === v18.8 PER-SEASON OFFICIAL POSTERS + WATCH ORDER SYNC ENGINE ===
     const seasonOrderSyncedIds = new Set();
 
     async function syncAnimeWatchOrderSeasons(anime, forceManual = false) {
@@ -8607,7 +8883,7 @@ img, video { max-width: 100%; height: auto; }
       if (forceManual) showToast(`Synced ${anime.seasons.length} season(s) & official posters!`);
     }
 
-    // === v18.6 LIVE CIRCULAR EPISODE PROGRESS RING & TRAVELING DOT (বিন্দু) ===
+    // === v18.8 LIVE CIRCULAR EPISODE PROGRESS RING & TRAVELING DOT (বিন্দু) ===
     const ORB_R = 27;
     const ORB_CIRC = 2 * Math.PI * ORB_R; // ~169.646
 
@@ -8999,7 +9275,7 @@ img, video { max-width: 100%; height: auto; }
         ctx.fillStyle = "#5eead4";
         ctx.font = "bold 20px monospace";
         ctx.textAlign = "center";
-        ctx.fillText("BITANIME.PRO v18.6 • SEASON POSTERS PRO", 480, 215);
+        ctx.fillText("BITANIME.PRO v18.8 • SEASON POSTERS PRO", 480, 215);
 
         ctx.fillStyle = "#ffffff";
         ctx.font = "900 42px Inter, sans-serif";
@@ -10353,7 +10629,7 @@ img, video { max-width: 100%; height: auto; }
 
         const moveScrub = (clientX) => {
           if (!pointerDown) return;
-          if (!moved && Math.abs(clientX - startX) > 6) {
+          if (!moved && Math.abs(clientX - startX) > 14) {
             moved = true;
             spring.dragging = true;
             dock.classList.add("is-dragging");
@@ -11450,16 +11726,25 @@ img, video { max-width: 100%; height: auto; }
           epProgressMap,
           theme: document.documentElement.getAttribute("data-theme") || "mono"
         };
-        const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+        const jsonText = JSON.stringify(payload, null, 2);
+        const fileName = `BitAnime_Pro_Backup_${new Date().toISOString().slice(0, 10)}.json`;
+        if (window.BitAnimeAndroid && typeof window.BitAnimeAndroid.shareJsonBackup === "function") {
+          const ok = window.BitAnimeAndroid.shareJsonBackup(fileName, jsonText);
+          if (ok) {
+            showToast("Opening Android Save/Share sheet...");
+            return;
+          }
+        }
+        const blob = new Blob([jsonText], { type: "application/json" });
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
-        a.download = `BitAnime_Pro_Backup_${new Date().toISOString().slice(0,10)}.json`;
+        a.download = fileName;
         document.body.appendChild(a);
         a.click();
         a.remove();
-        setTimeout(() => URL.revokeObjectURL(url), 8000);
-        showToast("Exported Library Backup (.json)!");
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+        showToast("Library backup exported!");
       });
 
       document.getElementById("importLibraryBackupInput")?.addEventListener("change", async (e) => {
@@ -11928,11 +12213,11 @@ img, video { max-width: 100%; height: auto; }
       }
 
       // =========================================================================
-      // 5. v18.6 BULLETPROOF MULTI-API AUTO WEEKLY + HINDI DUB + LIVE NEWS HUB
+      // 5. v18.8 BULLETPROOF MULTI-API AUTO WEEKLY + HINDI DUB + LIVE NEWS HUB
       //    Zero Paid Keys Needed: AniList + Jikan v4 + Kitsu + ANN RSS2JSON
       // =========================================================================
       // =========================================================================
-      // 5. v18.6 100% MANUAL PERSONAL WEEKLY SCHEDULE (USER-CONTROLLED)
+      // 5. v18.8 100% MANUAL PERSONAL WEEKLY SCHEDULE (USER-CONTROLLED)
       // =========================================================================
       const NEWS_CACHE_KEY = "bitanime_v186_news_hub_cache";
 
@@ -12525,7 +12810,7 @@ img, video { max-width: 100%; height: auto; }
           openDirectTrailerModal(trBtn.getAttribute("data-news-trailer"), trBtn.getAttribute("data-news-yt") || null);
         }
       });
-      // === v18.6 ANTI-FREEZE SAFETY GUARD (Escape closes any modal & unlocks scroll) ===
+      // === v18.8 ANTI-FREEZE SAFETY GUARD (Escape closes any modal & unlocks scroll) ===
       document.addEventListener("keydown", (e) => {
         if (e.key === "Escape") {
           const wm = document.getElementById("weeklyPickerModal");
@@ -12763,8 +13048,10 @@ img, video { max-width: 100%; height: auto; }
     })();
 
 
-    // === v18.6 ULTRA-SMOOTH ZERO-REFLOW SCROLL BACKDROP ENGINE (60Hz / 120Hz) ===
+    // === v18.8 ULTRA-SMOOTH ZERO-REFLOW SCROLL BACKDROP ENGINE (60Hz / 120Hz) ===
     (function initScrollBackdropEngine() {
+      // On mobile/tablets (<=768px), skip JS scroll DOM mutations so scrolling stays locked at 60/120fps butter-smooth!
+      if (window.innerWidth <= 768) return;
       const stage = document.getElementById("v173ParallaxStage");
       const auraCool = document.getElementById("v173AuraCool");
       const auraWarm = document.getElementById("v173AuraWarm");
@@ -12840,6 +13127,91 @@ img, video { max-width: 100%; height: auto; }
         applyTransforms(currentY);
       }, { passive: true });
       applyTransforms(currentY);
+    })();
+
+  
+    // === v18.8 ANDROID APK NATIVE BACK BUTTON & EXTERNAL LINK BRIDGE ===
+    (function initAndroidApkBridge() {
+      // 1. Intercept external links (<a target="_blank" href="http...">) inside Capacitor APK
+      document.addEventListener("click", (e) => {
+        const a = e.target.closest("a[href]");
+        if (!a) return;
+        const href = a.getAttribute("href") || "";
+        const target = a.getAttribute("target") || "";
+        if ((target === "_blank" || /^https?:\/\//i.test(href)) &&
+            window.BitAnimeAndroid && typeof window.BitAnimeAndroid.openExternalUrl === "function") {
+          e.preventDefault();
+          window.BitAnimeAndroid.openExternalUrl(href);
+        }
+      });
+
+      // 2. Native Android Hardware Back Button Handler (Called by MainActivity.java OnBackPressedCallback)
+      window.__bitAnimeHandleBack = function() {
+        try {
+          const ytWrap = document.getElementById("ytStickyVideoWrapper");
+          if (ytWrap && ytWrap.classList.contains("is-fullscreen")) {
+            restoreFullscreenPortal();
+            return "handled";
+          }
+          const tm = document.getElementById("trailerModal");
+          if (tm && !tm.classList.contains("hidden")) {
+            closeDirectTrailerModal();
+            return "handled";
+          }
+          const wm = document.getElementById("weeklyPickerModal");
+          if (wm && !wm.classList.contains("hidden")) {
+            if (typeof closeWeeklyPickerModal === "function") closeWeeklyPickerModal();
+            else { wm.classList.add("hidden"); wm.classList.remove("flex"); document.body.style.overflow = ""; }
+            return "handled";
+          }
+          const nm = document.getElementById("newsHubModal");
+          if (nm && !nm.classList.contains("hidden")) {
+            if (typeof closeNewsHubModal === "function") closeNewsHubModal();
+            else { nm.classList.add("hidden"); nm.classList.remove("flex"); document.body.style.overflow = ""; }
+            return "handled";
+          }
+          const am = document.getElementById("addAnimeModal");
+          if (am && !am.classList.contains("hidden")) {
+            am.classList.add("hidden");
+            am.classList.remove("flex");
+            document.body.style.overflow = "";
+            return "handled";
+          }
+          const sm = document.getElementById("mobileSearchOverlay");
+          if (sm && !sm.classList.contains("hidden")) {
+            closeMobileSearchOverlay();
+            return "handled";
+          }
+          const dm = document.getElementById("detailModal");
+          if (dm && !dm.classList.contains("hidden")) {
+            closeAnimeDetail();
+            return "handled";
+          }
+          const sp = document.getElementById("topSettingsPopover");
+          const vp = document.getElementById("topVaultPopover");
+          if (sp && !sp.classList.contains("hidden")) { sp.classList.add("hidden"); return "handled"; }
+          if (vp && !vp.classList.contains("hidden")) { vp.classList.add("hidden"); return "handled"; }
+
+          if (activeNav !== "HOME") {
+            const homeBtn = document.querySelector('.nav-tab[data-nav="HOME"]');
+            if (homeBtn) homeBtn.click();
+            return "handled";
+          }
+        } catch (_) {}
+        return "exit";
+      };
+
+      // 3. Safety net: prevent stuck body overflow when all modals are closed
+      document.addEventListener("visibilitychange", () => {
+        if (!document.hidden) {
+          const anyOpen = ["detailModal", "mobileSearchOverlay", "newsHubModal", "weeklyPickerModal", "trailerModal", "addAnimeModal"]
+            .some(id => {
+              const el = document.getElementById(id);
+              return el && !el.classList.contains("hidden");
+            });
+          if (!anyOpen) document.body.style.overflow = "";
+        }
+      });
     })();
 
   </script>
