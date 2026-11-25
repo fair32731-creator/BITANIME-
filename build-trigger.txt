@@ -1,1 +1,0 @@
-This commit triggers the BitAnime Android APK workflow.
