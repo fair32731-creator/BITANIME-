@@ -157,7 +157,7 @@ jobs:
                               "(function(){{try{{return typeof window.__bitAnimeHandleBack==='function'?window.__bitAnimeHandleBack():'exit';}}catch(e){{return 'exit';}}}})();",
                               value -> {{
                                   waitingForWebView = false;
-                                  if (!"\"handled\"".equals(value)) finishActivityBack();
+if (value == null || !value.contains("handled")) finishActivityBack();
                               }}
                           );
                       }}
