@@ -179,12 +179,37 @@ jobs:
           print("Installed native BitAnime video bridge in", main_act)
           PYEOF
 
+      - name: Use Asia-Pacific Maven Central mirror
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          mirror = 'maven { url "https://maven-central-asia.storage-download.googleapis.com/maven2/" }'
+          for path in Path("android").rglob("*.gradle"):
+              text = path.read_text(encoding="utf-8")
+              if "mavenCentral()" in text and mirror not in text:
+                  text = text.replace("mavenCentral()", mirror + "\n        mavenCentral()")
+                  path.write_text(text, encoding="utf-8")
+          PY
+
       - name: Build installable v18.6 debug APK
         run: |
           set -euo pipefail
           cd android
           chmod +x gradlew
-          ./gradlew assembleDebug --no-daemon
+          BUILD_OK=0
+          for attempt in 1 2 3; do
+            echo "Gradle build attempt $attempt/3"
+            if ./gradlew assembleDebug --no-daemon --max-workers=2; then
+              BUILD_OK=1
+              break
+            fi
+            if [ "$attempt" -lt 3 ]; then
+              sleep $((attempt * 20))
+            fi
+          done
+          test "$BUILD_OK" = "1"
           cd ..
           cp android/app/build/outputs/apk/debug/app-debug.apk BitAnime-Pro-v18.6.apk
           test -s BitAnime-Pro-v18.6.apk
