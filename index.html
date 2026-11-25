@@ -997,7 +997,8 @@ img, video { max-width: 100%; height: auto; }
       transition: opacity 0.3s ease;
     }
 
-    .yt-video-stage.is-glow-active .yt-ambient-canvas {      opacity: 0.65;
+    .yt-video-stage.is-glow-active .yt-ambient-canvas {
+      opacity: 0.65;
     }
 
     #inAppVideo {
@@ -1996,7 +1997,8 @@ img, video { max-width: 100%; height: auto; }
     }
 
     /* Visual Cue when Tick Mode is Active */
-    #episodeListContainer.is-tick-mode .ep-orb {      border-style: dashed;
+    #episodeListContainer.is-tick-mode .ep-orb {
+      border-style: dashed;
       border-color: rgba(52, 211, 153, 0.45);
     }
     #episodeListContainer.is-tick-mode .ep-orb.is-watched {
@@ -2995,7 +2997,8 @@ img, video { max-width: 100%; height: auto; }
     .editorial-poster-frame,
     .poster-wrap.editorial-card-frame {
       position: relative;
-      aspect-ratio: 2 / 3;      border-radius: 12px !important;
+      aspect-ratio: 2 / 3;
+      border-radius: 12px !important;
       overflow: hidden;
       background: #111216;
       border: 1px solid rgba(255, 255, 255, 0.09) !important;
@@ -3994,7 +3997,8 @@ img, video { max-width: 100%; height: auto; }
       content: "";
       position: absolute;
       inset: 0;
-      border-radius: inherit;      background: linear-gradient(125deg, transparent 20%, rgba(255, 255, 255, 0.32) 50%, transparent 80%);
+      border-radius: inherit;
+      background: linear-gradient(125deg, transparent 20%, rgba(255, 255, 255, 0.32) 50%, transparent 80%);
       transform: translateX(-120%);
       transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
       pointer-events: none;
@@ -4993,7 +4997,8 @@ img, video { max-width: 100%; height: auto; }
 
     /* Upper Curved Specular Glass Reflection */
     .apple-lens-specular {
-      position: absolute;      top: 2px;
+      position: absolute;
+      top: 2px;
       left: 12%;
       right: 12%;
       height: 13px;
@@ -5993,6 +5998,7 @@ img, video { max-width: 100%; height: auto; }
       <div class="flex-1 overflow-y-auto mt-3.5 space-y-4 no-scrollbar pb-24">
         <!-- Trace.moe Screenshot Detection Result Card -->
         <div id="traceMoeResultBox" class="hidden rounded-3xl p-3.5 bg-gradient-to-br from-[#162033] to-[#0a0f18] border border-[#5eead4]/40 shadow-xl space-y-2.5"></div>
+
         <!-- Dedicated Watch Order View (Works even when Search Input is Empty!) -->
         <div id="mobileWatchOrderWrap" class="hidden space-y-3">
           <div class="flex items-center justify-between gap-2">
@@ -6991,7 +6997,8 @@ img, video { max-width: 100%; height: auto; }
 
     function showToast(msg) {
       const el = document.getElementById("toastBox");
-      if (!el) return;      el.textContent = msg;
+      if (!el) return;
+      el.textContent = msg;
       el.classList.remove("hidden");
       clearTimeout(el._t);
       el._t = setTimeout(() => el.classList.add("hidden"), 2500);
@@ -7990,7 +7997,8 @@ img, video { max-width: 100%; height: auto; }
               posterCache[a.title] = hits[a.id];
               updatePosterInDom(a.id, hits[a.id]);
               updated++;
-            } else {              missed.push(a);
+            } else {
+              missed.push(a);
             }
           }
           // Fallback for any title not matched by AniList batch (e.g. Donghua -> Jikan/Kitsu)
@@ -8989,7 +8997,8 @@ img, video { max-width: 100%; height: auto; }
         ctx.stroke();
 
         ctx.fillStyle = "#5eead4";
-        ctx.font = "bold 20px monospace";        ctx.textAlign = "center";
+        ctx.font = "bold 20px monospace";
+        ctx.textAlign = "center";
         ctx.fillText("BITANIME.PRO v18.6 • SEASON POSTERS PRO", 480, 215);
 
         ctx.fillStyle = "#ffffff";
@@ -9988,7 +9997,8 @@ img, video { max-width: 100%; height: auto; }
         if (isLocalFile && !forceYtEmbed) {
           // YouTube blocks iframes on file:// (Error 153); show HD thumbnail launch card + optional try-embed button
           host.innerHTML = `
-            <div class="relative w-full h-full flex flex-col items-center justify-center bg-black overflow-hidden">              <img src="https://i.ytimg.com/vi/${stream.ytId}/hqdefault.jpg" alt="${title}" class="absolute inset-0 w-full h-full object-cover opacity-50" referrerpolicy="no-referrer" />
+            <div class="relative w-full h-full flex flex-col items-center justify-center bg-black overflow-hidden">
+              <img src="https://i.ytimg.com/vi/${stream.ytId}/hqdefault.jpg" alt="${title}" class="absolute inset-0 w-full h-full object-cover opacity-50" referrerpolicy="no-referrer" />
               <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-black/60"></div>
               <div class="relative z-10 text-center space-y-3 px-4">
                 <p class="text-xs font-bold text-slate-200">YouTube embeds require Android APK / HTTPS (blocked on local file://)</p>
@@ -10987,7 +10997,8 @@ img, video { max-width: 100%; height: auto; }
       });
 
       // MX Player Single-Tap Clean View & Double-Tap ±10s Stacking Seek
-      let lastTapTime = 0;      let singleTapTimeout = null;
+      let lastTapTime = 0;
+      let singleTapTimeout = null;
       let seekAccum = 0;
       let seekSide = "";
       let seekResetTimer = null;
@@ -11986,7 +11997,8 @@ img, video { max-width: 100%; height: auto; }
       }
 
       renderWeeklySection = function() {
-        const sec = document.getElementById("weeklySection");        if (!sec) return;
+        const sec = document.getElementById("weeklySection");
+        if (!sec) return;
         if (activeNav !== "WEEKLY") {
           sec.classList.add("hidden");
           return;
