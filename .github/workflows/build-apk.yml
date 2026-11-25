@@ -68,6 +68,20 @@ jobs:
         run: |
           python3 scripts/patch_android.py
 
+      - name: Use Asia-Pacific Maven Central mirror
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PYEOF'
+          from pathlib import Path
+          mirror = 'maven { url "https://maven-central-asia.storage-download.googleapis.com/maven2/" }'
+          for path in Path("android").rglob("*.gradle"):
+              text = path.read_text(encoding="utf-8")
+              if "mavenCentral()" in text and mirror not in text:
+                  text = text.replace("mavenCentral()", mirror + "\n        mavenCentral()")
+                  path.write_text(text, encoding="utf-8")
+          PYEOF
+
       - name: Build Signed Release APK (If Secrets Set) or Clean Debug APK
         env:
           KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
@@ -78,7 +92,16 @@ jobs:
           cd android
           chmod +x gradlew
           if [ -n "$KEYSTORE_BASE64" ]; then
-            ./gradlew assembleRelease --no-daemon
+            BUILD_OK=0
+            for attempt in 1 2 3; do
+              echo "Gradle release build attempt $attempt/3"
+              if ./gradlew assembleRelease --no-daemon --max-workers=2; then
+                BUILD_OK=1
+                break
+              fi
+              if [ "$attempt" -lt 3 ]; then sleep $((attempt * 20)); fi
+            done
+            test "$BUILD_OK" = "1"
             cd ..
             BUILD_TOOLS=$(ls -d "$ANDROID_HOME"/build-tools/* | sort -V | tail -n 1)
             echo "$KEYSTORE_BASE64" | base64 --decode > release.keystore
@@ -91,7 +114,16 @@ jobs:
               --out BitAnime-Pro-v19.7.apk \
               app-aligned.apk
           else
-            ./gradlew assembleDebug --no-daemon
+            BUILD_OK=0
+            for attempt in 1 2 3; do
+              echo "Gradle debug build attempt $attempt/3"
+              if ./gradlew assembleDebug --no-daemon --max-workers=2; then
+                BUILD_OK=1
+                break
+              fi
+              if [ "$attempt" -lt 3 ]; then sleep $((attempt * 20)); fi
+            done
+            test "$BUILD_OK" = "1"
             cd ..
             cp android/app/build/outputs/apk/debug/app-debug.apk BitAnime-Pro-v19.7.apk
           fi
