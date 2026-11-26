@@ -1,4 +1,4 @@
-name: Build BitAnime Pro v19.7 APK
+name: Build BitAnime Pro v21.7 APK
 
 on:
   workflow_dispatch:
@@ -11,13 +11,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Restore v19.7 source from uploaded archive
-        shell: bash
-        run: |
-          set -euo pipefail
-          base64 --decode .github/source-v19.7.zip.b64 > /tmp/bitanime-v19.7.zip
-          unzip -o /tmp/bitanime-v19.7.zip -d .
 
       - name: Setup Node.js 20
         uses: actions/setup-node@v4
@@ -34,6 +27,9 @@ jobs:
         uses: android-actions/setup-android@v3
         with:
           packages: platform-tools
+
+      - name: Install Android API 35 and build tools
+        run: sdkmanager --install 'platforms;android-35' 'build-tools;35.0.0' 'platform-tools'
 
       - name: Prepare Self-Contained Offline Web Bundle & Capacitor 7
         run: |
@@ -61,12 +57,28 @@ jobs:
       - name: Apply BitAnime App Icons & Splash Screen
         run: |
           if [ -f assets/icon-only.png ]; then
-            npx capacitor-assets generate --android --iconBackgroundColor '#141821' --splashBackgroundColor '#141821' || true
+            npx capacitor-assets generate --android --iconBackgroundColor '#050608' --splashBackgroundColor '#050608' || true
           fi
 
-      - name: Inject v19.7 Android System Bars + Smooth WebView Bridge
+      - name: Inject v21.7 Android 15 Safe WindowInsets & Pro Bridge
         run: |
           python3 scripts/patch_android.py
+
+      - name: Set Android app version metadata
+        shell: bash
+        run: |
+          python3 - <<'PYEOF'
+          import re
+          from pathlib import Path
+          p = Path("android/app/build.gradle")
+          s = p.read_text(encoding="utf-8")
+          s, code_n = re.subn(r"versionCode\s+\d+", "versionCode 21700", s, count=1)
+          s, name_n = re.subn(r"versionName\s+['\"][^'\"]+['\"]", 'versionName "21.7"', s, count=1)
+          if code_n != 1 or name_n != 1:
+              raise SystemExit("Could not set Android versionCode/versionName")
+          p.write_text(s, encoding="utf-8")
+          print("Android version set to 21.7 (versionCode 21700)")
+          PYEOF
 
       - name: Use Asia-Pacific Maven Central mirror
         shell: bash
@@ -95,10 +107,7 @@ jobs:
             BUILD_OK=0
             for attempt in 1 2 3; do
               echo "Gradle release build attempt $attempt/3"
-              if ./gradlew assembleRelease --no-daemon --max-workers=2; then
-                BUILD_OK=1
-                break
-              fi
+              if ./gradlew assembleRelease --no-daemon --max-workers=2; then BUILD_OK=1; break; fi
               if [ "$attempt" -lt 3 ]; then sleep $((attempt * 20)); fi
             done
             test "$BUILD_OK" = "1"
@@ -111,25 +120,33 @@ jobs:
               --ks-key-alias "$KEY_ALIAS" \
               --ks-pass "pass:$KEYSTORE_PASSWORD" \
               --key-pass "pass:${KEY_PASSWORD:-$KEYSTORE_PASSWORD}" \
-              --out BitAnime-Pro-v19.7.apk \
+              --out BitAnime-Pro-v21.7.apk \
               app-aligned.apk
           else
             BUILD_OK=0
             for attempt in 1 2 3; do
               echo "Gradle debug build attempt $attempt/3"
-              if ./gradlew assembleDebug --no-daemon --max-workers=2; then
-                BUILD_OK=1
-                break
-              fi
+              if ./gradlew assembleDebug --no-daemon --max-workers=2; then BUILD_OK=1; break; fi
               if [ "$attempt" -lt 3 ]; then sleep $((attempt * 20)); fi
             done
             test "$BUILD_OK" = "1"
             cd ..
-            cp android/app/build/outputs/apk/debug/app-debug.apk BitAnime-Pro-v19.7.apk
+            cp android/app/build/outputs/apk/debug/app-debug.apk BitAnime-Pro-v21.7.apk
           fi
+
+      - name: Verify APK signature and file
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s BitAnime-Pro-v21.7.apk
+          BUILD_TOOLS=$(ls -d "$ANDROID_HOME"/build-tools/* | sort -V | tail -n 1)
+          "$BUILD_TOOLS/apksigner" verify --verbose BitAnime-Pro-v21.7.apk
+          ls -lh BitAnime-Pro-v21.7.apk
 
       - name: Upload Installable APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: BitAnime-Pro-v19.7-APK
-          path: BitAnime-Pro-v19.7.apk
+          name: BitAnime-Pro-v21.7-APK
+          path: BitAnime-Pro-v21.7.apk
+          if-no-files-found: error
+          retention-days: 30
